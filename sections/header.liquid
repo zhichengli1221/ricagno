@@ -67,9 +67,9 @@
 <div data-section-id="{{ section.id }}" data-section-type="header-section">
   <div class="header-wrapper{% if overlay_header %} header-wrapper--overlay is-light{% endif %} ">
 
-    {%- if section.settings.show_announcement -%}
-      {%- render 'announcement-bar', section: section -%}
-    {%- endif -%}
+    
+    {%- render 'custom-topbar' -%}
+    
 
     <header
       class="site-header{%if section.settings.type_navigation_style %} site-header--heading-style{% endif %}"
