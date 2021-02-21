@@ -27,6 +27,12 @@
   endunless
 -%}
 
+{%- style -%}
+.custom-product-description {
+  margin-bottom: 30px;
+}
+{%- endstyle -%}
+
 <div id="ProductSection-{{ section_id }}"
   class="product-section"
   data-section-id="{{ section_id }}"
@@ -253,7 +259,7 @@
             {% endif %}
 
             {%- unless settings.product_description_collapse -%}
-              <div class="product-single__description rte">
+              <div class="product-single__description rte custom-product-description">
                 {{ product.description }}
               </div>
             {%- endunless -%}
