@@ -89,18 +89,18 @@
       endunless
     -%}
     
-    <div class="btn-addto-cart">
-      <button
-        {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
-        name="add"
-        id="AddToCart-{{ section_id }}"
-        class="btn btn--full add-to-cart {% if enable_dynamic_buttons %}add-to-cart--secondary{% endif %}"
-        {% unless current_variant.available %} disabled="disabled"{% endunless %}>
-        <span id="AddToCartText-{{ section_id }}" data-default-text="{{ default_text }}">
-          {{ button_text }}
-        </span>
-      </button>
-    </div>
+    
+    <button
+      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+      name="add"
+      id="AddToCart-{{ section_id }}"
+      class="btn btn--full add-to-cart {% if enable_dynamic_buttons %}add-to-cart--secondary{% endif %}"
+      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+      <span id="AddToCartText-{{ section_id }}" data-default-text="{{ default_text }}">
+        {{ button_text }}
+      </span>
+    </button>
+    
 
     {% if enable_dynamic_buttons %}
       {{ form | payment_button }}
