@@ -1,0 +1,37 @@
+<div>
+  <div class="background-image" style="background-image: url('{{ section.settings.background_image | img_url: '1800x' }}');"></div>
+  <div class="text-container">
+    <div class="title">{{section.settings.title}}</div>
+    <div class="sub-title">{{section.settings.subtitle}}</div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Home Introduction",
+  "class": "home-introduction",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background  Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "SubTitle"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Introduction",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+{%- style -%}
+@media (max-width: 768px) {
+  .desktop-footer-menu {
+    display: none;
+  }
+  .mobile-footer-menu {
+    display: block;
+  }
+}
+@media (min-width: 768px) {
+  .desktop-footer-menu {
+    display: block;
+  }
+  .mobile-footer-menu {
+    display: none;
+  }
+}
+
+.mobile-footer-menu {
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.mobile-footer-menu-title {
+  font-weight: bold;
+  margin: 10px 0px;
+}
+
+.mobile-footer-menu-list {
+  margin: 0px;
+  list-style: none;
+}
+
+.mobile-footer-menu-list li {
+  margin: 10px 0px;
+}
+
+@media only screen and (max-width: 589px) {
+  .site-footer .grid__item:after {
+    border-bottom: none;
+  }
+}
+
+
+{%- endstyle -%}
+<div class="desktop-footer-menu">
+  {% if linklists[block.settings.menu].links.size > 0 %}
+    {% if block.settings.show_footer_title %}
+      <p class="footer__title small--hide">
+        {{ linklists[block.settings.menu].title }}
+      </p>
+      <button type="button" class="footer__title collapsible-trigger collapsible-trigger-btn medium-up--hide" aria-controls="Footer-{{ block.id }}">
+        {{ linklists[block.settings.menu].title }}
+        {%- render 'collapsible-icons' -%}
+      </button>
+    {% endif %}
+    <div
+      {% if block.settings.show_footer_title %}
+        id="Footer-{{ block.id }}" class="collapsible-content collapsible-content--small"
+      {% endif %}>
+      <div class="collapsible-content__inner">
+        <div class="footer__collapsible{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
+          <ul class="no-bullets site-footer__linklist">
+            {%- for link in linklists[block.settings.menu].links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<div class="mobile-footer-menu">
+  {% if linklists[block.settings.menu].links.size > 0 %}
+    {% if block.settings.show_footer_title %}
+      <div class="mobile-footer-menu-title">
+        {{ linklists[block.settings.menu].title }}
+      </div>
+    {% endif %}    
+    <ul class="mobile-footer-menu-list">
+      {%- for link in linklists[block.settings.menu].links -%}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {%- endfor -%}
+    </ul>
+  {% endif %}
+</div>

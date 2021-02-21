@@ -1,0 +1,64 @@
+{%- style -%}
+.custom-footer-mobile-newsletter {
+  margin: 30px 10px;
+  font-family: "StyreneAWeb-Regular";
+  display: none;
+}
+.mobile-news-letter-title {
+  font-size: 25px;
+}
+.mobile-news-letter-content {
+  margin: 10px 0px;
+}
+
+.custom-footer-mobile-newsletter .input-group-field {
+  width: 100%;
+  text-align: center;
+}
+
+.custom-footer-mobile-newsletter .custom-submit-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .custom-footer-mobile-newsletter {
+    display: block;
+  }
+}
+{%- endstyle -%}
+
+<div class="custom-footer-mobile-newsletter">
+  {% if block.settings.show_footer_title %}
+    <div class="mobile-news-letter-title" >{{ block.settings.title }}</div>
+  {% endif %}
+  {% if block.settings.richtext != blank %}
+    <div class="mobile-news-letter-content">
+      {{ block.settings.richtext }}
+    </div>
+  {% endif %}
+  <div class="">
+    {% form 'customer', id: 'newsletter-footer' %}
+      {% if form.posted_successfully? %}
+        <div class="note note--success">{{ 'general.newsletter_form.newsletter_confirmation' | t }}</div>
+      {% endif %}
+      {% if form.context == 'footer' %}
+        {% if form.errors %}
+          {{ form.errors | default_errors }}
+        {% endif %}
+      {% endif %}
+
+      <label for="Email-{{ block.id }}" class="hidden-label">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
+      <input type="hidden" name="contact[tags]" value="prospect,newsletter">
+      <input type="hidden" name="contact[context]" value="footer">
+      <div class="">
+        <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="Your email here" name="contact[email]" id="Email-{{ section_id }}" class="input-group-field newsletter__input" autocorrect="off" autocapitalize="off">
+        <span class="input-group-btn">
+          <button type="submit" class="btn custom-submit-button" name="commit">
+            <span>{{ 'general.newsletter_form.submit' | t }}</span>
+          </button>
+        </span>
+      </div>
+    {% endform %}
+  </div>    
+</div>

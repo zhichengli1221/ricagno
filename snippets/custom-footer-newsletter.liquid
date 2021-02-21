@@ -1,0 +1,57 @@
+{%- style -%}
+.custom-news-letter-title {
+  font-size: 20px !important;
+}
+@media (max-width: 768px) {
+  .custom-footer-newsletter {
+    display: none;
+  }
+}
+{%- endstyle -%}
+<div class="custom-footer-newsletter">
+  {% if block.settings.show_footer_title %}
+    <p class="footer__title small--hide custom-news-letter-title">{{ block.settings.title }}</p>
+    <button type="button" class="footer__title collapsible-trigger collapsible-trigger-btn medium-up--hide" aria-controls="Footer-{{ block.id }}">
+      {{ block.settings.title }}
+      {%- render 'collapsible-icons' -%}
+    </button>
+  {% endif %}
+  <div
+    {% if block.settings.show_footer_title %}
+      id="Footer-{{ block.id }}" class="collapsible-content collapsible-content--small is-open"
+    {% endif %}>
+    <div class="collapsible-content__inner">
+      <div class="footer__collapsible footer_collapsible--disabled">
+        {% if block.settings.richtext != blank %}
+          {{ block.settings.richtext }}
+        {% endif %}
+  
+        {% form 'customer', id: 'newsletter-footer' %}
+          {% if form.posted_successfully? %}
+            <div class="note note--success">{{ 'general.newsletter_form.newsletter_confirmation' | t }}</div>
+          {% endif %}
+          {% if form.context == 'footer' %}
+            {% if form.errors %}
+              {{ form.errors | default_errors }}
+            {% endif %}
+          {% endif %}
+  
+          <label for="Email-{{ block.id }}" class="hidden-label">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
+          <input type="hidden" name="contact[tags]" value="prospect,newsletter">
+          <input type="hidden" name="contact[context]" value="footer">
+          <div class="input-group newsletter__input-group">
+            <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="Your email here" name="contact[email]" id="Email-{{ section_id }}" class="input-group-field newsletter__input" autocorrect="off" autocapitalize="off">
+            <span class="input-group-btn">
+              <button type="submit" class="btn" name="commit">
+                <span class="form__submit--large">{{ 'general.newsletter_form.submit' | t }}</span>
+                <span class="form__submit--small">
+                  <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-arrow-right" viewBox="0 0 50 15"><path d="M0 9.63V5.38h35V0l15 7.5L35 15V9.63z"/></svg>
+                </span>
+              </button>
+            </span>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>

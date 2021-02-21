@@ -1,0 +1,36 @@
+{%- style -%}
+.custom-page-title {
+  font-size: {{ section.settings.font_size }}px;
+  margin-top: 40px;
+}
+@media (max-width: 768px) {
+  .custom-page-title {
+    text-align: center;
+  }
+}
+{%- endstyle -%}
+<div class="page-width custom-page-title">
+  {{ section.settings.title }}
+</div>
+{% schema %}
+{
+  "name": "Custom Page Title",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font Size",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

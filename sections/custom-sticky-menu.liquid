@@ -1,0 +1,155 @@
+{%- liquid
+  assign main_menu = linklists[section.settings.main_menu_link_list]
+
+  assign logo_alignment = 'left'
+-%}
+<div data-section-type="header-section" class="custom-header-section">
+  {%- if section.settings.show_announcement -%}
+    {%- render 'custom-announcement-bar', section: section -%}
+  {%- endif -%}
+
+  <div class="custom-top-bar">
+    {%- render 'header-logo-block', section: section -%}
+
+    <div class="header-item header-item--icons">
+      {%- render 'header-icons', section: section -%}
+    </div>
+  </div>
+  <div class="custom-sticky-menu">
+    <div class="sticky-menu-list">
+      {%- for link in main_menu.links limit: limit offset: offset -%}
+        {%- style -%}
+        .sticky-menu-item {
+          font-size: {{ section.settings.font_size}}px;
+        }
+        {%- endstyle -%}
+          <a class="sticky-menu-item" href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- render 'cart-drawer' -%}
+
+  <div class="site-header__search-container">
+    <div class="site-header__search">
+      <div class="page-width">
+        <form action="{{ routes.search_url }}" method="get" id="HeaderSearchForm" class="site-header__search-form" role="search">
+          <input type="hidden" name="type" value="{{ settings.search_type }}">
+          <button type="submit" class="text-link site-header__search-btn">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><path d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58zM54 54L41.94 42"/></svg>
+            <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+          </button>
+          <input type="search" name="q" value="{{ search.terms | escape | replace: '*', '' }}" placeholder="{{ 'general.search.placeholder' | t }}" class="site-header__search-input" aria-label="{{ 'general.search.placeholder' | t }}">
+        </form>
+        <button type="button" class="js-search-header-close text-link site-header__search-btn">
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"/></svg>
+          <span class="icon__fallback-text">{{ 'general.accessibility.close_modal' | t | json }}</span>
+        </button>
+      </div>
+    </div>
+    {%- if settings.predictive_search_enabled -%}
+      <div class="predictive-results hide">
+        <div class="page-width">
+          <div id="PredictiveResults"></div>
+          <div class="text-center predictive-results__footer">
+            <button type="button" class="btn" data-predictive-search-button>
+              <small>
+                {{ 'general.search.view_more' | t }}
+              </small>
+            </button>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Sticky Menu",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "main_menu_link_list",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font Size",
+      "default": 65,
+      "min": 40,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Announcement bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show an announcement"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Free shipping and returns",
+      "info": "When closed, the announcement will remain closed until the next visit. Change the text to see it again."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },    
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo-inverted",
+          "label": "White logo",
+          "info": "Used when on top of an image"
+        },
+        {
+          "type": "range",
+          "id": "desktop_logo_width",
+          "label": "Desktop logo width",
+          "default": 200,
+          "min": 100,
+          "max": 400,
+          "step": 10,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "mobile_logo_width",
+          "label": "Mobile logo width",
+          "default": 140,
+          "min": 60,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "info": "Set as a max-width, may appear smaller"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

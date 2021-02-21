@@ -1,0 +1,132 @@
+{%- liquid
+  assign isEmpty = true
+
+  if section.blocks.size > 0
+    assign isEmpty = false
+  endif
+-%}
+
+{%- style -%}
+.our-story-image-tile {
+  width: 16.66%;
+  height: 200px;
+}
+.our-story-divider {
+  display: flex;
+  align-items: center;
+  margin: 30px 0px;
+}
+.split-divider {
+  flex: 1;
+  height: 1px;
+  background-color: black;
+}
+.os-title {
+  margin: 0px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.our-story-section {
+  margin: 50px 0px;
+}
+
+@media (max-width: 768px) {
+  .our-story-image-tile {
+    width: 50%;
+  }
+
+  .split-divider {
+    height: 0px;
+  }
+
+  .os-title {
+    font-size: 18px;
+  }
+}
+{%- endstyle -%}
+
+<div class="our-story-section">
+  {%- if section.settings.title != blank -%}
+    <div class="our-story-divider">
+      <div class="split-divider"></div>
+      <div class="os-title">
+        <img src="{{ 'icon-instagram.png' | asset_url }}" style="height: 20px; width: 20px; margin-right: 30px" />
+        {{ section.settings.title }}
+      </div>
+      <div class="split-divider"></div>
+    </div>
+  {% endif %}
+
+  <div class="page-width grid{% if section.settings.enable_gutter %} grid--small-gutters{%else%} grid--no-gutters{% endif %}">
+
+    {%- for block in section.blocks -%}
+      <div class="grid__item our-story-image-tile skrim__item" data-aos="skrim__animation">
+        <a href="#" class="skrim__link skrim__item-content">
+          <div
+            class="skrim__overlay grid__image lazyload"
+            data-bgset="{% render 'bgset', image: block.settings.image %}"
+            data-sizes="auto">
+          </div>
+          <noscript>
+            <div
+              class="skrim__overlay grid__image"
+              style="background-image: url({{ block.settings.image | img_url: '400x' }});">
+            </div>
+          </noscript>
+        </a>
+      </div>
+    {%- endfor -%}
+
+    {% if isEmpty %}
+      <div class="page-width">
+        <div class="grid">
+          <div class="grid__item">
+            <div class="rte">
+              {{ 'home_page.onboarding.no_content' | t }}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Custom Our Story",
+    "max_blocks": 15,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "our stories"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_gutter",
+        "label": "Add spacing",
+        "default": false
+      }
+    ],
+    "presets": [{
+      "name": "Custom Our Story",
+      "category": "Collection"
+    }],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "image_block",
+        "settings": [
+          {
+            "type": "image_picker",
+            "label": "your image",
+            "id": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

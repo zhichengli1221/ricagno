@@ -1,0 +1,37 @@
+{%- style -%}
+@media (max-width: 700px) {
+  .shop_button {
+    position: absolute;
+    right: 0px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background: black;
+    width: 80px;
+    justify-content: center;
+  }
+
+  .announcement__link {
+    color: white;
+  }
+}
+{%- endstyle -%}
+
+<div class="announcement{% if section.settings.announcement_closable %} announcement--closeable announcement--closed{% endif %}">
+  <span class="announcement__text{% unless sections.settings.announcement_closable %} announcement__text--open{% endunless %}" data-text="{{ section.settings.announcement_text | strip_html | handle }}">
+    {{ section.settings.announcement_text | strip_html }}
+  </span>
+
+  {%- if section.settings.button_link != blank -%}
+    <div class="shop_button">
+      <a href="{{ section.settings.button_link }}" class="announcement__link"> {{ section.settings.button_text }} </a>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.announcement_closable -%}
+    <button type="button" class="text-link announcement__close">
+      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"/></svg>
+      <span class="icon__fallback-text">{{ 'general.accessibility.close' | t | json }}</span>
+    </button>
+  {%- endif -%}
+</div>

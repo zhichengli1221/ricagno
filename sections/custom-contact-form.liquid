@@ -1,0 +1,208 @@
+{%- style -%}
+.contact-us {
+  margin: 50px 0px;
+  font-family: "StyreneAWeb-Regular";
+}
+.information-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+.information-hr {
+  width: 200px;
+  margin: 15px 0px;
+}
+.information-detail {
+  margin: 5px 0px;
+  color: black;
+}
+.information-title {
+  margin-top: 10px;
+}
+
+.custom-contact-form {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .custom-contact-form {
+    flex-direction: column;
+  }
+
+  .custom-contact-form .grid {
+    margin-top: 30px;
+  }
+
+  .custom-contact-form-submit-button {
+    width: 100%;
+  }
+}
+{%- endstyle -%}
+<div class="page-width custom-contact-form">
+
+
+  <div class="contact-information" style="flex: 1;">
+    <div class="information-title">{{ section.settings.address }}</div>
+    {%- if section.settings.location != blank -%}  
+      <div class="information-detail">
+        <img src="{{'location-pin.png' | asset_img_url}}" alt="" />
+        {{ section.settings.location }}
+      </div>
+    {%- endif -%}
+    {%- if section.settings.phone != blank -%}  
+      <div class="information-detail">
+        <img src="{{'phone.png' | asset_img_url}}" alt="" />
+        Phone: {{ section.settings.phone }}
+      </div>
+    {%- endif -%}
+  
+    {%- for block in section.blocks -%}  
+      <hr class="information-hr">
+
+      <div class="information-title">{{ block.settings.enquery_title }}</div>
+      <div class="information-detail">
+        <img src="{{'envelope-o.png' | asset_img_url}}" alt="" />
+        {{ block.settings.enquery_content }}
+      </div>
+    {%- endfor -%}  
+
+  </div>
+
+
+  <div class="grid" style="flex: 2;">
+    <div class="grid__item{% if section.settings.narrow_column %} medium-up--three-quarters medium-up--push-one-eighth{% endif %}">
+      {%- if section.settings.title != blank -%}
+        <div class="section-header">
+          <h2 class="section-header__title">
+            {{ section.settings.title }}
+          </h2>
+        </div>
+      {% endif %}
+
+      <div class="form-vertical">
+        {%- assign form_id = 'contact-' | append: section.id -%}
+        {%- form 'contact', id: form_id -%}
+
+          {%- if form.posted_successfully? -%}
+            <p class="note note--success">
+              {{ 'contact.form.post_success' | t }}
+            </p>
+          {%- endif -%}
+
+          {{ form.errors | default_errors }}
+
+          <div class="grid grid--small">
+            <div class="grid__item medium-up--one-half">
+              <input type="text" placeholder="NAME" id="ContactFormName-{{ section.id }}" class="input-full" name="contact[name]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+            </div>
+
+            {%- if section.settings.show_surname -%}
+              <div class="grid__item medium-up--one-half">
+                <input type="text" placeholder="SURNAME" id="ContactFormSurname-{{ section.id }}" class="input-full" name="contact[surname]" autocorrect="off" autocapitalize="off" value="{% if form.surname %}{{ form.surname }}{% elsif customer %}{{ customer.surname }}{% endif %}">
+              </div>
+            {%- endif -%}
+          
+            <div class="grid__item medium-up--one-half">
+              <input type="email" placeholder="EMAIL" id="ContactFormEmail-{{ section.id }}" class="input-full" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+            </div>
+            
+            {%- if section.settings.show_phone -%}
+              <div class="grid__item medium-up--one-half">
+                <input type="tel" placeholder="PHONE" id="ContactFormPhone-{{ section.id }}" class="input-full" name="contact[phone]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+              </div>
+            {%- endif -%}
+          </div>
+
+          <textarea rows="5" placeholder="MESSAGE" id="ContactFormMessage-{{ section.id }}" class="input-full" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+          <button type="submit" class="btn custom-contact-form-submit-button">
+            {{ 'contact.form.send' | t }}
+          </button>
+
+          {% comment %}
+            Remove the following three lines of code to remove the note
+            about being protected by Google's reCAPTCHA service.
+            By removing it, the small reCAPTCHA widget will appear in the
+            bottom right corner of the page.
+          {% endcomment %}
+          
+
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Contact form",
+    "class": "contact-us",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "All submissions are sent to the customer email address of your store. [Learn more](https://help.shopify.com/en/manual/using-themes/change-the-layout/add-contact-form#view-contact-form-submissions)."
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Contact us"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_phone",
+        "label": "Show phone number"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_surname",
+        "label": "Show surname"
+      },
+      {
+        "type": "checkbox",
+        "id": "narrow_column",
+        "label": "Narrow column"
+      },
+      {
+        "type": "header",
+        "content": "Location Information"
+      },
+      {
+        "type": "text",
+        "id": "address",
+        "label": "Address"
+      },
+      {
+        "type": "text",
+        "id": "location",
+        "label": "Location"
+      },
+      {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Enquiries",
+        "settings": [
+          {
+            "type": "text",
+            "id": "enquery_title",
+            "label": "Enquery Title"
+          },
+          {
+            "type": "text",
+            "id": "enquery_content",
+            "label": "Enquery Content"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Contact form",
+      "category": "Store information"
+    }]
+  }
+{% endschema %}

@@ -1,0 +1,106 @@
+{%- style -%}
+.contact-us-title {
+  display: flex;
+  align-items: center;
+  margin: 30px 0px;
+}
+.contact-us-title .left-divider {
+  width: 200px;
+  height: 1px;
+  background: white;
+}
+
+.contact-us-title .title-value {
+  margin: 0px 10px;
+  font-weight: bold;
+}
+
+.contact-us-title .right-divider {
+  flex: 1;
+  height: 1px;
+  background: white;
+}
+
+.contact-us-description {
+  margin-left: 210px;
+  width: 500px;
+}
+
+.contact-us-header {
+  margin-top: -25px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .contact-us-header {
+    display: none;
+  }
+}
+{%- endstyle -%}
+
+<div class="contact-us-header" style="background: url('{{ section.settings.background_image | img_url: 'master' }}'); background-size: cover; background-position: center;">
+  <div class="contact-us-title">
+    <div class="left-divider"></div>
+    {%- style -%}
+    .title-value {
+      font-size: {{ section.settings.fontSize }}px;
+      text-transform: uppercase;
+    }
+    {%- endstyle -%}
+    <div class="title-value">{{ section.settings.title }}</div>
+    <div class="right-divider"></div>
+  </div>
+  
+  <div class="contact-us-description">
+    {{ section.settings.description }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact us header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "contact us"
+    },
+    {
+      "type": "range",
+      "id": "fontSize",
+      "label": "Font Size",
+      "default": 12,
+      "min": 12,
+      "max": 100,
+      "unit": "px"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+var width = parseInt($('.page-width').css("margin-left"), 10) + 40
+$('.left-divider').css("width", width - 10)
+$('.contact-us-description').css("margin-left", width)
+
+$(window).resize(function() {
+  var width = parseInt($('.page-width').css("margin-left"), 10) + 40
+  $('.left-divider').css("width", width)
+  $('.contact-us-description').css("margin-left", width)
+})
+{% endjavascript %}

@@ -1,0 +1,348 @@
+{%- style -%}
+.desktop-custom-collection-filter {
+  display: flex;
+  align-items: baseline;
+}
+.collection-name {
+  text-transform: uppercase;
+  font-size: 14px;
+}
+.divider {
+  flex: 1;
+  height: 1px;
+  background-color: #707070;
+  margin-left: 12px;
+  margin-right: 6px;
+}
+.filters {
+  display: flex;
+}
+.label-content {
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px;
+  cursor: pointer;
+}
+.arrow-icon {
+  width: 10px;
+  transition: transform .4s ease-in-out;
+}
+.filter-label {
+  text-transform: uppercase;
+}
+
+.filter-item {
+  position: relative;
+  margin: 0px 4px;
+}
+.color-boxes {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+}
+.color-box {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.filter-container {
+  width: 250px;
+  height: 0px;
+  display: flex;
+  align-items: center;
+  transition: all .4s;
+  overflow: hidden;
+  position: absolute;
+  z-index: 100;
+  background: white;
+}
+
+.space-box {
+  height: 2px;
+  background: white;
+  position: absolute;
+  top: 36px;
+  width: 118px;
+  left: 1px;
+  visibility: hidden;
+  z-index: 101;
+}
+
+.filter-item.open .arrow-icon {
+  transform: rotate(180deg);
+  transition: transform .4s ease-in-out;
+}
+
+.filter-item.open .label-content{
+  border: 1px solid #707070;
+}
+.filter-item.open .space-box {
+  visibility: visible;
+}
+.filter-item.open .filter-container {
+  border: 1px solid #707070;
+  height: 100px;
+}
+
+.color-box.checked {
+  border: 2px solid black;
+}
+
+.filter-container.last-container {
+  right: 0;
+}
+.filter-tags {
+  display: flex;
+  float: right;
+  margin: 20px 0px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.filter-tag {
+  padding: 10px 20px;
+  background: black;
+  color: white;
+  position: relative;
+}
+.filter-tag .tag-close-button {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  cursor: pointer;
+}
+.color-box label {
+  visibility: hidden;
+}
+
+.mobile-custom-collection-filter {
+  display: none;
+}
+
+@media(max-width: 768px) {
+  .desktop-custom-collection-filter {
+    display: none;
+  }
+
+  .mobile-custom-collection-filter {
+    display: block;
+  }
+
+  .filter-tags {
+    margin-right: 20px;
+  }
+
+  .mobile-filter-icon {
+    display: block !important;
+  }
+}
+
+.mobile-custom-collection-filter .collection-name {
+  font-size: 16px;
+  text-align: right;
+}
+
+.filter-area {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-filter-icon {
+  display: none;
+  width: 20px;
+  height: 20px;
+}
+
+.mobile-filter-menu {
+  box-shadow: rgb(0 0 0 / 19%) 0 3px 10px;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: 95px;
+  z-index: 200;
+  background: white;
+  max-height: 0px;
+  transition: all 0.4s;
+  overflow: hidden;
+}
+
+.mobile-filter-menu.open {
+  max-height: 700px !important;
+  height: 700px !important;
+  padding: 20px 10px;
+  overflow: auto;
+}
+
+.close-mobile-filter-button {
+  font-size: 16px;
+  color: black;
+  text-align: right;
+}
+
+
+.faq {
+  overflow: auto;
+  border-top: 1px solid grey;
+  font-family: "StyreneAWeb-Regular";
+  margin-top: 50px;
+}
+
+
+.faq .tab-toggle {
+  display: none;
+}
+.faq .tab-label {
+  display: flex;
+  justify-content: space-between;
+  padding: 2em;
+  font-weight: bold;
+  color: black;
+  border-bottom: 1px solid grey;
+  margin: 0px;
+  font-family: "StyreneAWeb-Regular";  
+}
+.faq .tab-label:hover {
+  cursor: pointer;
+}
+
+.faq .tab-label::after {
+  content: "\276F";
+  transition: all 0.4s;
+}
+
+.faq .tab-toggle:checked ~ .tab-label::after {
+  transform: rotate(90deg);
+}
+
+.faq .tab-content {
+  background-color: white;
+  max-height: 0px;
+  overflow: hidden;
+  transition: all 0.4s;
+  padding: 0 1em;
+}
+.faq .tab-toggle:checked ~ .tab-content {
+  max-height: 100vh;
+  padding: 1em;
+  border-bottom: 1px solid grey;
+}
+
+.apply-filter-button {
+  margin: 30px 0px;
+  width: 100%;
+  padding: 15px;
+  background: black;
+  color: white;
+  text-align: center;
+}
+{%- endstyle -%}
+
+<div class="mobile-custom-collection-filter">
+  <div class="collection-name">{{ collection.title }}</div>
+
+  <div class="mobile-filter-menu">
+    <div class="close-mobile-filter-button">
+      <img src="{{'icon-close.png' | asset_img_url: '10px' }}" alt="">
+    </div>
+
+    <div class="faq">
+      <div class="tab">
+        <input type="checkbox" id="tab-toggle-color" class="tab-toggle" />
+        <label for="tab-toggle-color" class="tab-label">Color </label>
+        <div class="tab-content">
+          <div class="color-boxes">
+            <div class="color-box" style="background: red;"><label>red</label></div>
+            <div class="color-box" style="background: blue;"><label>blue</label></div>
+            <div class="color-box" style="background: green;"><label>green</label></div>
+            <div class="color-box" style="background: grey;"><label>grey</label></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab">
+        <input type="checkbox" id="tab-toggle-material" class="tab-toggle" />
+        <label for="tab-toggle-material" class="tab-label">Material </label>
+        <div class="tab-content">
+        </div>
+      </div>
+
+      <div class="tab">
+        <input type="checkbox" id="tab-toggle-size" class="tab-toggle" />
+        <label for="tab-toggle-size" class="tab-label">Size </label>
+        <div class="tab-content">
+        </div>
+      </div>
+
+      <div class="tab">
+        <input type="checkbox" id="tab-toggle-heelheight" class="tab-toggle" />
+        <label for="tab-toggle-heelheight" class="tab-label">Heel Height </label>
+        <div class="tab-content">
+        </div>
+      </div>
+    </div>
+
+    <div class="apply-filter-button">APPLY FILTERS</div>
+  </div>
+</div>
+
+<div class="desktop-custom-collection-filter">
+  <div class="collection-name">{{ collection.title }}</div>
+  <div class="divider"></div>
+  <div class="filters">
+    <div class="filter-item">
+      <div class="label-content">
+        <div class="filter-label">Color</div> 
+        <svg aria-hidden="true" focusable="false" role="presentation" class="arrow-icon" viewBox="0 0 28 16"><path d="M1.57 1.59l12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none" fill-rule="evenodd"/></svg>
+      </div>
+      <div class="space-box"></div>
+      <div class="filter-container">
+        <div class="color-boxes">
+          <div class="color-box" style="background: red;"><label>red</label></div>
+          <div class="color-box" style="background: blue;"><label>blue</label></div>
+          <div class="color-box" style="background: green;"><label>green</label></div>
+          <div class="color-box" style="background: grey;"><label>grey</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-item">
+      <div class="label-content">
+        <div class="filter-label">material</div> 
+        <svg aria-hidden="true" focusable="false" role="presentation" class="arrow-icon" viewBox="0 0 28 16"><path d="M1.57 1.59l12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none" fill-rule="evenodd"/></svg>
+      </div>
+      <div class="space-box"></div>
+      <div class="filter-container">
+      </div>
+    </div>
+
+    <div class="filter-item">
+      <div class="label-content">
+        <div class="filter-label">size</div> 
+        <svg aria-hidden="true" focusable="false" role="presentation" class="arrow-icon" viewBox="0 0 28 16"><path d="M1.57 1.59l12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none" fill-rule="evenodd"/></svg>
+      </div>
+      <div class="space-box"></div>
+      <div class="filter-container">
+      </div>
+    </div>
+
+    <div class="filter-item">
+      <div class="label-content">
+        <div class="filter-label">Hell Height</div> 
+        <svg aria-hidden="true" focusable="false" role="presentation" class="arrow-icon" viewBox="0 0 28 16"><path d="M1.57 1.59l12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none" fill-rule="evenodd"/></svg>
+      </div>
+      <div class="space-box"></div>
+      <div class="filter-container last-container">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-area">
+  <div class="filter-tags">
+  </div>
+
+  <img class="mobile-filter-icon" src="{{'icon-filter.png' | asset_img_url: '10px' }}" alt="">
+</div>

@@ -1,0 +1,178 @@
+{%- style -%}
+.customer-care-section {
+  position: fixed;
+  top: 220px;
+  left: 150px;
+  border: 1px solid grey;
+  border-bottom: none;
+}
+.section-item {
+  padding: 10px 20px;
+  border-bottom: 1px solid grey;
+  cursor: pointer;
+}
+.section-item.checked {
+  background: black;
+  color: white;
+}
+
+.faq {
+  overflow: auto;
+  position: absolute;
+  left: 350px;
+  top: 220px;
+  border: 1px solid grey;
+  border-bottom: none;
+  font-family: "StyreneAWeb-Regular";
+}
+
+.faq .tab {
+  width: calc(100vw - 400px);
+}
+
+.faq .tab-toggle {
+  display: none;
+}
+.faq .tab-label {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  font-weight: bold;
+  color: black;
+  border-bottom: 1px solid grey;
+  margin: 0px;
+  
+}
+.faq .tab-label:hover {
+  cursor: pointer;
+}
+
+.faq .tab-label::after {
+  content: "\276F";
+  transition: all 0.4s;
+}
+
+.faq .tab-toggle:checked ~ .tab-label::after {
+  transform: rotate(90deg);
+}
+
+.faq .tab-content {
+  background-color: white;
+  max-height: 0px;
+  overflow: hidden;
+  transition: all 0.4s;
+  padding: 0 1em;
+}
+.faq .tab-toggle:checked ~ .tab-content {
+  max-height: 100vh;
+  padding: 1em;
+  border-bottom: 1px solid grey;
+}
+
+@media (max-width: 768px) {
+  .customer-care-section {
+    position: initial;
+    margin: 10px;
+  }
+
+  .faq {
+    max-height: none;
+    position: initial;
+    margin: 50px 10px;
+  }
+  
+  .faq .tab {
+    width: auto;
+  }
+}
+{%- endstyle -%}
+
+{%- assign sections = section.settings.sections | split: ',' -%}
+<div class="customer-care-section">
+  {%- for item in sections -%}
+    <div class="section-item">{{ item }} </div>    
+  {%- endfor -%}
+</div>
+
+<div class="faq">
+  {%- for block in section.blocks -%}  
+    <div class="tab" data-section-title="{{ block.settings.section_title }}">
+      <input type="checkbox" id="tab{{forloop.index}}" class="tab-toggle" />
+      <label for="tab{{forloop.index}}" class="tab-label">{{ block.settings.information_title }} </label>
+      <div class="tab-content">
+        {{ block.settings.information_content }}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Customer-Care_section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sections",
+      "label": "Sections",
+      "info": "Input sections seperate by comma(,)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Sections",
+      "settings": [
+        {
+          "id": "section_title",
+          "type": "text",
+          "label": "Section Title"
+        },
+        {
+          "type": "header",
+          "content": "Information"
+        },
+        {
+          "id": "information_title",
+          "type": "text",
+          "label": "Title"
+        },
+        {
+          "id": "information_content",
+          "type": "richtext",
+          "label": "Content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+var firstElement = $('.customer-care-section').children()[0]
+firstElement.classList.add("checked")
+renderFAQs(firstElement.innerText)
+
+$('.section-item').on('click', function (e) {
+  $('.section-item').each((index, el) => {
+    el.classList.remove('checked')
+  })
+
+  this.classList.add("checked")
+  renderFAQs(this.innerText)
+})
+
+function renderFAQs(section) {
+  $('.tab').each((index, ele) => {
+    if (ele.dataset.sectionTitle == section) {
+      ele.style.display = "block"
+    } else {
+      ele.style.display = "none"
+    }
+  })
+}
+
+setTimeout(() => {
+  var height = $('.main-content').height() - 100
+  $('.faq').css("max-height", height);
+}, 100)
+{% endjavascript %}
