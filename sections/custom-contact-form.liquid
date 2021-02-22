@@ -36,6 +36,9 @@
     width: 100%;
   }
 }
+.custom-contact-form-title {
+  text-align: left;
+}
 {%- endstyle -%}
 <div class="page-width custom-contact-form">
 
@@ -72,7 +75,7 @@
     <div class="grid__item{% if section.settings.narrow_column %} medium-up--three-quarters medium-up--push-one-eighth{% endif %}">
       {%- if section.settings.title != blank -%}
         <div class="section-header">
-          <h2 class="section-header__title">
+          <h2 class="section-header__title custom-contact-form-title">
             {{ section.settings.title }}
           </h2>
         </div>
