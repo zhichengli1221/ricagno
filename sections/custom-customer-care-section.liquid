@@ -1,10 +1,8 @@
 {%- style -%}
 .customer-care-section {
-  position: fixed;
-  top: 220px;
-  left: 150px;
   border: 1px solid grey;
   border-bottom: none;
+  margin-right: 10px;
 }
 .section-item {
   padding: 10px 20px;
@@ -18,7 +16,7 @@
 
 .faq {
   overflow: auto;
-  position: absolute;
+  
   left: 350px;
   top: 220px;
   border: 1px solid grey;
@@ -69,41 +67,55 @@
   border-bottom: 1px solid grey;
 }
 
+.custom-customer-care-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
 @media (max-width: 768px) {
   .customer-care-section {
-    position: initial;
-    margin: 10px;
+    width: 100%;
   }
 
   .faq {
     max-height: none;
-    position: initial;
-    margin: 50px 10px;
+    width: 100%;
+    margin: 20px 0px;
   }
   
   .faq .tab {
     width: auto;
   }
+
+  .custom-customer-care-container {
+    flex-direction: column;
+  }  
 }
 {%- endstyle -%}
 
 {%- assign sections = section.settings.sections | split: ',' -%}
-<div class="customer-care-section">
-  {%- for item in sections -%}
-    <div class="section-item">{{ item }} </div>    
-  {%- endfor -%}
-</div>
 
-<div class="faq">
-  {%- for block in section.blocks -%}  
-    <div class="tab" data-section-title="{{ block.settings.section_title }}">
-      <input type="checkbox" id="tab{{forloop.index}}" class="tab-toggle" />
-      <label for="tab{{forloop.index}}" class="tab-label">{{ block.settings.information_title }} </label>
-      <div class="tab-content">
-        {{ block.settings.information_content }}
-      </div>
+<div class="page-width">
+  <div class="custom-customer-care-container">
+    <div class="customer-care-section">
+      {%- for item in sections -%}
+        <div class="section-item">{{ item }} </div>    
+      {%- endfor -%}
+    </div>    
+
+    <div class="faq">
+      {%- for block in section.blocks -%}  
+        <div class="tab" data-section-title="{{ block.settings.section_title }}">
+          <input type="checkbox" id="tab{{forloop.index}}" class="tab-toggle" />
+          <label for="tab{{forloop.index}}" class="tab-label">{{ block.settings.information_title }} </label>
+          <div class="tab-content">
+            {{ block.settings.information_content }}
+          </div>
+        </div>
+      {%- endfor -%}
     </div>
-  {%- endfor -%}
+  </div>
 </div>
 
 {% schema %}

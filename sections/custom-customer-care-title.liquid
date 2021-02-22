@@ -68,3 +68,15 @@
   ]
 }
 {% endschema %}
+
+{% javascript %}
+var width = parseInt($('.page-width').css("margin-left"), 10) + 40
+$('.left-divider').css("width", width - 10)
+$('.contact-us-description').css("margin-left", width)
+
+$(window).resize(function() {
+  var width = parseInt($('.page-width').css("margin-left"), 10) + 40
+  $('.left-divider').css("width", width)
+  $('.contact-us-description').css("margin-left", width)
+})
+{% endjavascript %}
