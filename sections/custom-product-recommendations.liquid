@@ -54,7 +54,8 @@
 .custom-section-header__title {
   font-size: 18px;
   text-transform: uppercase;
-  margin-right: 20px;
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
@@ -86,6 +87,12 @@
   }
 }
 
+.divider {
+  width: 200px;
+  height: 1px;
+  background: #e8e8e1;
+}
+
 {%- endstyle -%}
 
 {%- if section.settings.show_product_recommendations -%}
@@ -106,7 +113,11 @@
       <div class="page-width">
         <header class="custom-section-header">
           <div class="custom-section-header__title">
-            {{ section.settings.product_recommendations_heading }}
+            <div class="divider"></div>
+            <span style="margin: 0px 10px;">
+              {{ section.settings.product_recommendations_heading }}
+            </span>
+            <div class="divider"></div>
           </div>
         </header>
       </div>
